@@ -6,13 +6,19 @@ local Runtime = {
   combinators = nil,
 
   signal_overflows = nil,
+  
+  curr = nil,
 }
 
 --- Run the main logic on all StaCos
 -- For binding to the on_tick event
 function Runtime:run_combinators()
   if not (self.combinators) then self.register_combinators() end
-  for _, sc in pairs(self.combinators) do sc:run() end
+  -- for _, sc in pairs(self.combinators) do sc:run() end
+  self.curr, curr_val = next(self.combinators, self.curr)
+  if(curr_val) then
+    curr_val:run()
+  end
 end
 
 --- Raise an alarm if a StaCo is receiving more signals than it can output.
